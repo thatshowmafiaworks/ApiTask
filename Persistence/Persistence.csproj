@@ -24,4 +24,10 @@
     <ProjectReference Include="..\Domain\Domain.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="Features\Commands\AttributeCommands\" />
+    <Folder Include="Features\Handlers\AttributeHandlers\" />
+    <Folder Include="Features\Queries\AttributeQueries\" />
+  </ItemGroup>
+
 </Project>
