@@ -7,7 +7,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Persistence.Features.Handlers
+namespace Persistence.Features.Handlers.ProductHandlers
 {
     public class DeleteProductHandler : IRequestHandler<DeleteProductCommand, int>
     {
