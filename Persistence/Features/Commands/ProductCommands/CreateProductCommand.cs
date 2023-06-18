@@ -11,7 +11,7 @@ namespace Persistence.Features.Commands.ProductCommands
         public Category? Category { get; set; }
         public decimal Price { get; set; }
         public int Quantity { get; set; }
-        public IList<ProductAttribute>? Attributes { get; set; }
+        public List<ProductAttribute>? Attributes { get; set; }
 
         public CreateProductCommand(ProductDTO productDTO)
         {

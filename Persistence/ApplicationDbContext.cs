@@ -22,6 +22,16 @@ namespace Persistence
             optionsBuilder.UseSqlServer(_configuration.GetConnectionString("DefaultConnection"));
         }
 
+        protected override void OnModelCreating(ModelBuilder modelBuilder)
+        {
+            modelBuilder.Entity<Category>()
+                .HasMany(c => c.Products)
+                .WithOne(p => p.Category);
+
+            modelBuilder.Entity<Product>()
+                .HasMany(attr => attr.Attributes)
+                .WithMany(prod => prod.Products);
+        }
 
     }
 }
