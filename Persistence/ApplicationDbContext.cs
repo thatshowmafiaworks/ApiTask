@@ -15,6 +15,7 @@ namespace Persistence
         public ApplicationDbContext(IConfiguration configuration)
         {
             _configuration = configuration;
+            Database.EnsureCreated();
         }
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
