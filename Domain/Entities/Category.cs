@@ -1,8 +1,9 @@
 ﻿namespace Domain.Entities
 {
-    public class ProductAttribute : BaseEntity
+    public class Category : BaseEntity
     {
         public string Name { get; set; }
         public string Description { get; set; }
+
     }
 }
