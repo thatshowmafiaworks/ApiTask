@@ -1,64 +1,83 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Domain.Entities;
+using MediatR;
+using Microsoft.AspNetCore.Mvc;
+using Persistence.DTOs;
+using Persistence.Features.Commands.ProductCommands;
+using Persistence.Features.Queries.CategoryQueries;
+using Persistence.Features.Queries.ProductQueries;
 
 namespace Api.Controllers
 {
     public class ProductController : ControllerBase
     {
-        public ProductController()
+        private readonly IMediator _mediator;
+        public ProductController(IMediator mediator)
         {
-
+            _mediator = mediator;
         }
 
         [HttpGet("/api/products")]
-        public ActionResult GetProductsAll()
+        public async Task<List<Product>> GetProductsAll()
         {
-            throw new NotImplementedException();
+            var products = await _mediator.Send(new GetProductsListQuery());
+            return products;
         }
 
         [HttpGet("/api/product/{id}")]
-        public ActionResult GetProductById(int id)
+        public async Task<Product> GetProductById(int id)
         {
-            throw new NotImplementedException();
+            var product = await _mediator.Send(new GetProductByIdQuery { Id = id });
+            return product;
         }
 
         [HttpGet("/api/product")]
-        public ActionResult GetProductsWithCategory([FromQuery]string category) {
-            throw new NotImplementedException();
+        public async Task<List<Product>> GetProductsWithCategory([FromQuery] string category)
+        {
+            var categoryByName = await _mediator.Send(new GetCategoryByNameQuery { CategoryName = category });
+            var products = await _mediator.Send(new GetProductsWithCategoryQuery { CategoryId = categoryByName.Id });
+            return products;
         }
 
         [HttpPost("/api/product")]
-        public ActionResult AddProduct([FromBody]AddProductCommand command)
+        public async Task<Product> AddProduct([FromBody] ProductDTO productDTO)
         {
-            throw new NotImplementedException();
+            var product = await _mediator.Send(new CreateProductCommand(productDTO));
+            return product;
         }
 
         [HttpPost("api/product/{id}/quantity")]
-        public ActionResult ChangeProductQuantity(int id, [FromBody]int quantity)
+        public async Task<int> ChangeProductQuantity(int id, [FromBody] int quantity)
         {
-            throw new NotImplementedException();
+            var product = await _mediator.Send(new GetProductByIdQuery { Id = id });
+            product.Quantity = quantity;
+            var isUpdated = await _mediator.Send(new UpdateProductCommand(product));
+            return isUpdated;
         }
 
         [HttpPost("api/product/{id}/attribute")]
-        public ActionResult AddAttribute(int id, [FromBody]AddAttributeCommand command)
+        public ActionResult AddAttribute(int id, [FromBody] ProductDTO productDTO)
         {
             throw new NotImplementedException();
         }
 
         [HttpPatch("api/product/{id}/attribute")]
-        public ActionResult ChangeAttribute(int id, [FromBody]ChangeAttributeCommand command)
+        public ActionResult ChangeAttribute(int id, [FromBody] ProductDTO productDTO)
         {
             throw new NotImplementedException();
         }
 
         [HttpDelete("api/product/{id}/attribute")]
-        public ActionResult DeleteAttribute(int id, [FromBody]DeleteAttributeCommand command) { 
+        public ActionResult DeleteAttribute(int id, [FromBody] ProductDTO productDTO)
+        {
             throw new NotImplementedException();
         }
 
         [HttpDelete("api/product/{id}")]
-        public ActionResult DeleteProduct(int id)
+        public async Task<int> DeleteProduct(int id)
         {
-            throw new NotImplementedException();
+            var product = await _mediator.Send(new GetProductByIdQuery { Id = id });
+            var isDeleted = await _mediator.Send(new DeleteProductCommand { Id = id });
+            return isDeleted;
         }
     }
 }
