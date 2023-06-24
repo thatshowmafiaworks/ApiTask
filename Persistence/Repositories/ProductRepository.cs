@@ -23,6 +23,7 @@ namespace Persistence.Repositories
             return await _context.Products.Where(x => x.Id == Id).FirstOrDefaultAsync();
         }
 
+
         public async Task<Product> AddProductAsync(Product product)
         {
             var result = _context.Products.Add(product);
@@ -41,6 +42,12 @@ namespace Persistence.Repositories
             var product = _context.Products.Where(x => x.Id == Id).FirstOrDefault();
             _context.Products.Remove(product);
             return await _context.SaveChangesAsync();
+        }
+
+        public async Task<List<Product>> GetProductsWithCategoryAsync(int categoryId)
+        {
+            var products = await _context.Products.Where(x => x.CategoryId == categoryId).ToListAsync();
+            return products;
         }
     }
 }

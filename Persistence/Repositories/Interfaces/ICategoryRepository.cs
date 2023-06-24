@@ -9,5 +9,6 @@ namespace Persistence.Repositories.Interfaces
         public Task<Category> AddCategoryAsync(Category category);
         public Task<int> UpdateCategoryAsync(Category category);
         public Task<int> DeleteCategoryAsync(int Id);
+        public Task<Category> GetCategoryByNameAsync(string categoryName);
     }
 }

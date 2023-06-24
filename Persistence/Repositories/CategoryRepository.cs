@@ -39,5 +39,11 @@ namespace Persistence.Repositories
             _context.Categories.Remove(category);
             return await _context.SaveChangesAsync();
         }
+
+        public async Task<Category> GetCategoryByNameAsync(string categoryName)
+        {
+            var category = await _context.Categories.Where(x => x.Name == categoryName).FirstOrDefaultAsync();
+            return category;
+        }
     }
 }
